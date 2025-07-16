@@ -11,9 +11,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form';
-import { useLogin } from '@/store/useLogin';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Spinner } from '@/components/ui/Spinner';
+import { AuthStore } from '@/store/AuthStore';
 
 const LoginSchema = z.object({
   email: z
@@ -22,10 +22,12 @@ const LoginSchema = z.object({
     .min(8, { message: 'Email должен быть не менее 8 символов' }),
   password: z.string().min(8, { message: 'Пароль должен быть не менее 8 символов' }),
 });
+
 type TLogin = z.infer<typeof LoginSchema>;
 
 export function Login() {
   const navigate = useNavigate();
+  const { isLoading, error: serverError, setLoading, setErrorState } = AuthStore();
   const form = useForm<TLogin>({
     resolver: zodResolver(LoginSchema),
     defaultValues: { email: '', password: '' },
@@ -36,23 +38,51 @@ export function Login() {
   const {
     handleSubmit,
     control,
+    setError,
+    reset,
     watch,
     formState: { isSubmitting, errors },
   } = form;
 
-  const { login, error: serverError } = useLogin((s) => s);
-
   const [email, password] = watch(['email', 'password']);
-  const hasValues = email.trim() !== '' && password.trim() !== '';
-  const hasErrors = Boolean(errors.email) || Boolean(errors.password);
-  const disabled = !hasValues || isSubmitting || hasErrors;
+  const disabled =
+    !email.trim() ||
+    !password.trim() ||
+    isSubmitting ||
+    isLoading ||
+    Boolean(errors.email) ||
+    Boolean(errors.password);
+
+  async function loginUser(email: string, password: string) {
+    setLoading(true);
+    setErrorState(null);
+    try {
+      await new Promise<void>((resolve, reject) =>
+        setTimeout(() => {
+          if (email.trim() && password.trim()) resolve();
+          else reject(new Error('Email or password required'));
+        }, 1000),
+      );
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Unknown error';
+      setErrorState(message);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await login(data.email, data.password);
-      form.reset();
+      await loginUser(data.email, data.password);
+      reset();
       navigate('/', { replace: true });
-    } catch {}
+    } catch {
+      setError('password', {
+        type: 'manual',
+        message: serverError ?? 'Не удалось войти. Попробуйте ещё раз.',
+      });
+    }
   });
 
   return (
@@ -62,7 +92,7 @@ export function Login() {
           <form
             onSubmit={onSubmit}
             className={`space-y-6 p-6 bg-[var(--form-background)] rounded shadow ${
-              isSubmitting ? 'opacity-50 pointer-events-none' : ''
+              isSubmitting || isLoading ? 'opacity-50 pointer-events-none' : ''
             }`}
           >
             <FormField
@@ -93,15 +123,15 @@ export function Login() {
               )}
             />
 
-            {serverError && <div className="text-red-600 text-sm">{serverError}</div>}
-
             <Button type="submit" disabled={disabled} className="w-full">
-              {isSubmitting ? <Spinner sizeClass="w-5 h-5" /> : 'Login'}
+              {isSubmitting || isLoading ? <Spinner sizeClass="w-5 h-5" /> : 'Login'}
             </Button>
 
-            <Link to="/register" className="block mt-1 text-blue-500 text-center hover:underline">
-              Don't have an account? Sign up
-            </Link>
+            <div className="text-center">
+              <Link to="/register" className="text-blue-500 hover:underline">
+                {"Don't have an account? Sign up"}
+              </Link>
+            </div>
           </form>
         </div>
       </Form>
