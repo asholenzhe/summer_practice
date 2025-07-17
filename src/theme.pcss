@@ -44,24 +44,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.3526 0.0145 269.28);
+  --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.393 0.152 263.48);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.963 0.008 264.28);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.7 0.219 31.34);
-  --border: oklch(0.3526 0.0145 269.28);
-  --input: oklch(0.9532 0.0207 261.77);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.985 0 0);
+  --ring: oklch(0.393 0.152 263.48);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -75,7 +75,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --form-background: oklch(0.8287 0.0418 265.67);
+  --form-background: oklch(1 0 0);
 }
 
 .dark {
@@ -118,6 +118,49 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: linear-gradient(135deg, oklch(0.98 0.005 264.28), oklch(0.96 0.01 263.48));
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .shadow-3xl {
+    box-shadow:
+      0 35px 60px -12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .form-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .input-focus-ring {
+    @apply focus:ring-4 focus:ring-blue-100 focus:border-blue-500;
+  }
+
+  .button-gradient {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  }
+
+  .button-gradient:hover {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    transform: translateY(-2px);
   }
 }
 

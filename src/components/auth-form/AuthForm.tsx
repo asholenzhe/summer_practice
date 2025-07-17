@@ -34,28 +34,60 @@ export function AuthForm<T extends FieldValues>({
   } = form;
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Form {...form}>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className={`
-          space-y-6 p-6 bg-[var(--form-background)] rounded shadow
-          ${isSubmitting || isLoading ? 'opacity-50 pointer-events-none' : ''}
-        `}
+              space-y-6 p-8 bg-white rounded-2xl shadow-2xl border border-gray-100
+              backdrop-blur-sm transition-all duration-300 ease-in-out
+              hover:shadow-3xl hover:scale-[1.02] transform-gpu
+              ${isSubmitting || isLoading ? 'opacity-50 pointer-events-none' : ''}
+            `}
+            style={{
+              background: 'linear-gradient(145deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95))',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05)',
+            }}
           >
-            <AuthFormFields<T> control={control} fields={fields} />
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                {submitText === 'Login' ? 'Welcome Back' : 'Create Account'}
+              </h2>
+              <p className="text-gray-600">
+                {submitText === 'Login' ? 'Sign in to your account' : 'Join us today'}
+              </p>
+            </div>
 
-            {error && <div className="text-red-600 text-sm">{error}</div>}
+            <div>
+              <AuthFormFields<T> control={control} fields={fields} />
+            </div>
 
-            <Button type="submit" disabled={disabled} className="w-full">
-              {isSubmitting ? <Spinner sizeClass="w-5 h-5" /> : submitText}
-            </Button>
+            {error && (
+              <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-200">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <Button
+                type="submit"
+                disabled={disabled}
+                className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+              >
+                {isSubmitting ? <Spinner sizeClass="w-5 h-5" /> : submitText}
+              </Button>
+            </div>
 
             {linkTo && (
-              <a href={linkTo} className="block text-center mt-2 text-blue-500 hover:underline">
-                {linkText}
-              </a>
+              <div className="text-center pt-4">
+                <a
+                  href={linkTo}
+                  className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 hover:underline"
+                >
+                  {linkText}
+                </a>
+              </div>
             )}
           </form>
         </Form>

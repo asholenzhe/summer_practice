@@ -24,9 +24,14 @@ export function AuthFormFields<T extends FieldValues>({ control, fields }: AuthF
           name={field.name as FieldPath<T>}
           render={({ field: formField }) => (
             <FormItem>
-              <FormLabel>{field.label}</FormLabel>
+              <FormLabel className="text-gray-700 font-medium">{field.label}</FormLabel>
               <FormControl>
-                <Input type={field.type || 'text'} placeholder={field.placeholder} {...formField} />
+                <Input
+                  type={field.type || 'text'}
+                  placeholder={field.placeholder}
+                  className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+                  {...formField}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
