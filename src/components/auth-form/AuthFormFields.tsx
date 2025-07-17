@@ -1,0 +1,43 @@
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/Form.tsx';
+import { Input } from '@/components/ui/Input.tsx';
+
+export interface FormFieldConfig {
+  name: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+}
+
+interface AuthFormFieldsProps<T extends FieldValues> {
+  control: Control<T>;
+  fields: FormFieldConfig[];
+}
+
+export function AuthFormFields<T extends FieldValues>({ control, fields }: AuthFormFieldsProps<T>) {
+  return (
+    <>
+      {fields.map((field) => (
+        <FormField
+          key={field.name}
+          control={control}
+          name={field.name as FieldPath<T>}
+          render={({ field: formField }) => (
+            <FormItem>
+              <FormLabel className="text-gray-700 font-medium">{field.label}</FormLabel>
+              <FormControl>
+                <Input
+                  type={field.type || 'text'}
+                  placeholder={field.placeholder}
+                  className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+                  {...formField}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      ))}
+    </>
+  );
+}
