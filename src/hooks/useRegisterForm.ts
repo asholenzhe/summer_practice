@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '@/store/AuthStore.tsx';
+import { register } from '@/api/authApi/authApi.ts';
+import { useEffect } from 'react';
+import type { RegisterRequest } from '@/api/authApi/types.ts';
 
 const registerSchema = z
   .object({
@@ -37,7 +40,6 @@ export function useRegisterForm() {
   const {
     watch,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
   } = form;
 
@@ -48,6 +50,13 @@ export function useRegisterForm() {
     'password',
     'confirmPassword',
   ]);
+
+  useEffect(() => {
+    if (serverError) {
+      setErrorState(null);
+    }
+  }, [email, firstName, lastName, password, confirmPassword]);
+
   const hasEmpty =
     !email.trim() ||
     !firstName.trim() ||
@@ -61,34 +70,27 @@ export function useRegisterForm() {
     Boolean(errors.lastName) ||
     Boolean(errors.password) ||
     Boolean(errors.confirmPassword);
-  const disabled = hasEmpty || hasErrors || isSubmitting;
+  const disabled = hasEmpty || hasErrors || isSubmitting || Boolean(serverError);
 
   async function registerUser(
     email: string,
     firstName: string,
     lastName: string,
     password: string,
-    confirmPassword: string,
   ) {
     setLoading(true);
     setErrorState(null);
+    const payload: RegisterRequest = {
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
+      password: password,
+    };
     try {
-      await new Promise<void>((resolve, reject) =>
-        setTimeout(() => {
-          if (
-            email.trim() &&
-            firstName.trim() &&
-            lastName.trim() &&
-            password.trim() &&
-            confirmPassword.trim()
-          )
-            resolve();
-          else reject(new Error('Email or password required'));
-        }, 1000),
-      );
+      await register(payload);
     } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : 'Unknown error';
-      setErrorState(message);
+      const text = e instanceof Error ? e.message : 'Failed to register. Try again';
+      setErrorState(text);
       throw e;
     } finally {
       setLoading(false);
@@ -97,20 +99,12 @@ export function useRegisterForm() {
 
   async function onSubmit(data: RegistrationFormData) {
     try {
-      await registerUser(
-        data.email,
-        data.firstName,
-        data.lastName,
-        data.password,
-        data.confirmPassword,
-      );
+      await registerUser(data.email, data.firstName, data.lastName, data.password);
       form.reset();
       navigate('/login', { replace: true });
-    } catch {
-      setError('confirmPassword', {
-        type: 'manual',
-        message: serverError ?? 'Failed to register. Please try again.',
-      });
+    } catch (e: unknown) {
+      const text = e instanceof Error ? e.message : 'Failed to register';
+      setErrorState(text);
     }
   }
 
