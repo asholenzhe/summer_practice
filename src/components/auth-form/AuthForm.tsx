@@ -22,7 +22,6 @@ export function AuthForm<T extends FieldValues>({
   onSubmit,
   submitText,
   disabled,
-  isLoading,
   error,
   linkTo,
   linkText,
@@ -43,7 +42,7 @@ export function AuthForm<T extends FieldValues>({
               space-y-6 p-8 bg-white rounded-2xl shadow-2xl border border-gray-100
               backdrop-blur-sm transition-all duration-300 ease-in-out
               hover:shadow-3xl hover:scale-[1.02] transform-gpu
-              ${isSubmitting || isLoading ? 'opacity-50 pointer-events-none' : ''}
+              ${isSubmitting ? 'opacity-50 pointer-events-none' : ''}
             `}
             style={{
               background: 'linear-gradient(145deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95))',
