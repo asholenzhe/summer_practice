@@ -34,7 +34,7 @@ export function AuthForm<T extends FieldValues>({
   } = form;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen box-border flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
         <Form {...form}>
           <form
@@ -59,7 +59,7 @@ export function AuthForm<T extends FieldValues>({
               </p>
             </div>
 
-            <div>
+            <div className="space-y-4">
               <AuthFormFields<T> control={control} fields={fields} />
             </div>
 
