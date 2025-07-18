@@ -3,7 +3,7 @@ import { useLoginForm } from '@/hooks/useLoginForm';
 import { loginFields } from '@/AuthFormFieldsConfig.ts';
 
 export function Login() {
-  const { form, onSubmit, disabled, isLoading, serverError } = useLoginForm();
+  const { form, onSubmit, disabled, isLoading, serverError, clearError } = useLoginForm();
 
   return (
     <AuthForm
@@ -16,6 +16,7 @@ export function Login() {
       error={serverError}
       linkTo="/register"
       linkText="Don't have an account? Sign up"
+      clearError={clearError}
     />
   );
 }

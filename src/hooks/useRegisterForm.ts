@@ -4,15 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '@/store/AuthStore.tsx';
 import { register } from '@/api/authApi/authApi.ts';
-import { useEffect } from 'react';
 import type { RegisterRequest } from '@/api/authApi/types.ts';
+
+const emailPattern = /^\S+@\S+\.\S+$/;
 
 const registerSchema = z
   .object({
     email: z
       .string()
-      .email({ message: 'Email must be valid' })
-      .min(8, { message: 'Email must be at least 8 characters' }),
+      .min(8, { message: 'Email must be at least 8 characters' })
+      .regex(emailPattern, { message: 'Invalid email format' }),
     firstName: z.string(),
     lastName: z.string(),
     password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
@@ -51,11 +52,7 @@ export function useRegisterForm() {
     'confirmPassword',
   ]);
 
-  useEffect(() => {
-    if (serverError) {
-      setErrorState(null);
-    }
-  }, [email, firstName, lastName, password, confirmPassword]);
+  const clearError = () => setErrorState(null);
 
   const hasEmpty =
     !email.trim() ||
@@ -117,5 +114,6 @@ export function useRegisterForm() {
     disabled,
     isLoading,
     serverError,
+    clearError,
   };
 }

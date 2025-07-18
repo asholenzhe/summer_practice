@@ -3,12 +3,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthStore } from '@/store/AuthStore';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { login } from '@/api/authApi/authApi.ts';
+import type { LoginRequest } from '@/api/authApi/types.ts';
+
+const emailPattern = /^\S+@\S+\.\S+$/;
 
 const loginSchema = z.object({
   email: z
     .string()
-    .email({ message: 'Email must be valid' })
-    .min(8, { message: 'Email must be at least 8 characters' }),
+    .min(8, { message: 'Email must be at least 8 characters' })
+    .regex(emailPattern, { message: 'Invalid email format' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
 });
 
@@ -28,25 +32,26 @@ export function useLoginForm() {
   const {
     watch,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
   } = form;
 
   const [email, password] = watch(['email', 'password']);
   const hasEmpty = !email.trim() || !password.trim();
   const hasErrors = Boolean(errors.email) || Boolean(errors.password);
-  const disabled = hasEmpty || hasErrors || isSubmitting || isLoading;
+  const disabled = hasEmpty || hasErrors || isSubmitting || isLoading || Boolean(serverError);
+
+  const clearError = () => setErrorState(null);
 
   async function loginUser(email: string, password: string) {
     setLoading(true);
     setErrorState(null);
+    const payload: LoginRequest = {
+      email: email,
+      password: password,
+    };
     try {
-      await new Promise<void>((resolve, reject) =>
-        setTimeout(() => {
-          if (email.trim() && password.trim()) resolve();
-          else reject(new Error('Email or password required'));
-        }, 1000),
-      );
+      const tokens = await login(payload);
+      AuthStore.getState().setTokens(tokens);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : 'Unknown error';
       setErrorState(message);
@@ -61,11 +66,9 @@ export function useLoginForm() {
       await loginUser(data.email, data.password);
       form.reset();
       navigate('/', { replace: true });
-    } catch {
-      setError('password', {
-        type: 'manual',
-        message: serverError ?? 'Failed to login. Please try again.',
-      });
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Unknown error';
+      setErrorState(message);
     }
   }
 
@@ -78,5 +81,6 @@ export function useLoginForm() {
     disabled,
     isLoading,
     serverError,
+    clearError,
   };
 }

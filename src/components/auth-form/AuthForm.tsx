@@ -14,6 +14,7 @@ export interface AuthFormProps<T extends FieldValues> {
   error?: string | null;
   linkTo?: string;
   linkText?: string;
+  clearError: () => void;
 }
 
 export function AuthForm<T extends FieldValues>({
@@ -25,6 +26,7 @@ export function AuthForm<T extends FieldValues>({
   error,
   linkTo,
   linkText,
+  clearError,
 }: AuthFormProps<T>) {
   const {
     handleSubmit,
@@ -37,6 +39,7 @@ export function AuthForm<T extends FieldValues>({
       <div className="w-full max-w-md">
         <Form {...form}>
           <form
+            noValidate
             onSubmit={handleSubmit(onSubmit)}
             className={`
               space-y-6 p-8 bg-white rounded-2xl shadow-2xl border border-gray-100
@@ -59,7 +62,7 @@ export function AuthForm<T extends FieldValues>({
             </div>
 
             <div className="space-y-4">
-              <AuthFormFields<T> control={control} fields={fields} />
+              <AuthFormFields<T> control={control} fields={fields} clearError={clearError} />
             </div>
 
             {error && (
