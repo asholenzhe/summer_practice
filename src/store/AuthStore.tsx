@@ -11,13 +11,21 @@ interface AuthState {
   setTokens: (tokens: TokenData) => void;
 }
 
+const initialAccess = localStorage.getItem('accessToken');
+const initialRefresh = localStorage.getItem('refreshToken');
+
 export const AuthStore = create<AuthState>((set) => ({
   isLoading: false,
   error: null,
-  accessToken: null,
-  refreshToken: null,
+  accessToken: initialAccess,
+  refreshToken: initialRefresh,
 
   setLoading: (loading) => set({ isLoading: loading }),
   setErrorState: (message) => set({ error: message }),
-  setTokens: ({ accessToken, refreshToken }) => set({ accessToken, refreshToken }),
+
+  setTokens: ({ accessToken, refreshToken }) => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    set({ accessToken, refreshToken });
+  },
 }));

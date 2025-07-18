@@ -5,13 +5,14 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { login } from '@/api/authApi/authApi.ts';
 import type { LoginRequest } from '@/api/authApi/types.ts';
-import { useEffect } from 'react';
+
+const emailPattern = /^\S+@\S+\.\S+$/;
 
 const loginSchema = z.object({
   email: z
     .string()
-    .email({ message: 'Email must be valid' })
-    .min(8, { message: 'Email must be at least 8 characters' }),
+    .min(8, { message: 'Email must be at least 8 characters' })
+    .regex(emailPattern, { message: 'Invalid email format' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
 });
 
@@ -39,15 +40,7 @@ export function useLoginForm() {
   const hasErrors = Boolean(errors.email) || Boolean(errors.password);
   const disabled = hasEmpty || hasErrors || isSubmitting || isLoading || Boolean(serverError);
 
-  useEffect(
-    () => {
-      if (serverError) {
-        setErrorState(null);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [email, password],
-  );
+  const clearError = () => setErrorState(null);
 
   async function loginUser(email: string, password: string) {
     setLoading(true);
@@ -88,5 +81,6 @@ export function useLoginForm() {
     disabled,
     isLoading,
     serverError,
+    clearError,
   };
 }

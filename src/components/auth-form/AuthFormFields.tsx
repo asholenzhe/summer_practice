@@ -12,9 +12,14 @@ export interface FormFieldConfig {
 interface AuthFormFieldsProps<T extends FieldValues> {
   control: Control<T>;
   fields: FormFieldConfig[];
+  clearError: () => void;
 }
 
-export function AuthFormFields<T extends FieldValues>({ control, fields }: AuthFormFieldsProps<T>) {
+export function AuthFormFields<T extends FieldValues>({
+  control,
+  fields,
+  clearError,
+}: AuthFormFieldsProps<T>) {
   return (
     <>
       {fields.map((field) => (
@@ -31,6 +36,10 @@ export function AuthFormFields<T extends FieldValues>({ control, fields }: AuthF
                   placeholder={field.placeholder}
                   className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg"
                   {...formField}
+                  onChange={(e) => {
+                    formField.onChange(e);
+                    clearError();
+                  }}
                 />
               </FormControl>
               <FormMessage />

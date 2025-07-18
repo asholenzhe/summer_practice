@@ -1,20 +1,28 @@
+// src/App.tsx
 import './App.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from '@/pages/Login';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Home } from '@/pages/Home';
 import { Registration } from '@/pages/Registration';
+import { Home } from '@/pages/Home';
+import { ProtectedRoute } from '@/ProtectedRoute';
+import { PublicRoute } from '@/PublicRoute';
+import { AuthStore } from '@/store/AuthStore';
 
-function App() {
+export default function App() {
+  const token = AuthStore((s) => s.accessToken);
+
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
+    <Routes>
+      <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </>
+      </Route>
+
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Home />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to={token ? '/' : '/login'} replace />} />
+    </Routes>
   );
 }
-
-export default App;
