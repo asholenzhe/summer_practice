@@ -9,6 +9,7 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   setTokens: (tokens: TokenData) => void;
+  logout: () => void;
 }
 
 const initialAccess = localStorage.getItem('accessToken');
@@ -27,5 +28,11 @@ export const AuthStore = create<AuthState>((set) => ({
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     set({ accessToken, refreshToken });
+  },
+
+  logout: () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    set({ accessToken: null, refreshToken: null, error: null });
   },
 }));

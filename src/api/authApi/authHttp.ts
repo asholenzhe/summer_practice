@@ -23,12 +23,21 @@ authHttp.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 authHttp.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ErrorResponse>) => {
+    const status = error.response?.status;
+    const store = AuthStore.getState();
+
     const serverMsg = error.response?.data?.error;
     if (serverMsg) {
       return Promise.reject(new Error(serverMsg));
     }
-    if (error.response) {
-      return Promise.reject(new Error(`HTTP ${error.response.status}`));
+
+    if ((status === 401 || status === 403) && store.accessToken) {
+      store.logout();
+      window.location.href = '/login';
+      return Promise.reject(new Error('Unauthorized. Logging out.'));
+    }
+    if (status) {
+      return Promise.reject(new Error(`HTTP ${status}`));
     }
     if (error.request) {
       return Promise.reject(new Error('Network error. Check connection.'));
