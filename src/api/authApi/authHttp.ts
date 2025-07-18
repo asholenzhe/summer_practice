@@ -1,4 +1,4 @@
-import axios, { type AxiosError } from 'axios';
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import type { ErrorResponse } from '@/api/authApi/types.ts';
 import { AuthStore } from '@/store/AuthStore.tsx';
 
@@ -12,7 +12,7 @@ const authHttp = axios.create({
   },
 });
 
-authHttp.interceptors.request.use((config) => {
+authHttp.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = AuthStore.getState().accessToken;
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;

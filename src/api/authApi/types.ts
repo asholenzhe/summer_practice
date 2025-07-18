@@ -1,13 +1,13 @@
-export interface RegisterRequest {
+interface BaseAuthRequest {
   email: string;
-  first_name: string;
-  last_name: string;
   password: string;
 }
 
-export interface LoginRequest {
-  email: string;
-  password: string;
+export interface LoginRequest extends BaseAuthRequest {}
+
+export interface RegisterRequest extends BaseAuthRequest {
+  first_name: string;
+  last_name: string;
 }
 
 export type TokenResponse = {
