@@ -1,12 +1,12 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import type { ErrorResponse, RetryableRequestConfig } from '@/api/authApi/types.ts';
+import type { ErrorResponse, RetryableRequestConfig } from './types';
 import { AuthStore } from '@/store/AuthStore.tsx';
 import { refreshAccessToken } from '@/api/authApi/authApi.ts';
 
-const BASE_URL = 'http://localhost:8080/auth';
+const NO_AUTH_PATHS = ['/login', '/register', '/refresh'];
 
 const authHttp = axios.create({
-  baseURL: BASE_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -14,14 +14,10 @@ const authHttp = axios.create({
 });
 
 authHttp.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  if (
-    config.url?.endsWith('/login') ||
-    config.url?.endsWith('/register') ||
-    config.url?.endsWith('/refresh')
-  ) {
+  const url = config.url ?? '';
+  if (NO_AUTH_PATHS.some((path) => url.endsWith(path))) {
     return config;
   }
-
   const token = AuthStore.getState().accessToken;
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -43,12 +39,14 @@ authHttp.interceptors.response.use(
     ) {
       (original as RetryableRequestConfig)._retry = true;
       try {
-        const newToken = await refreshAccessToken();
-        original.headers!['Authorization'] = `Bearer ${newToken}`;
+        const { access_token, refresh_token } = await refreshAccessToken(
+          AuthStore.getState().refreshToken!,
+        );
+        AuthStore.getState().setTokens({ accessToken: access_token, refreshToken: refresh_token });
+        original.headers!['Authorization'] = `Bearer ${access_token}`;
         return authHttp.request(original);
       } catch {
-        AuthStore.getState().logout();
-        window.location.href = '/login';
+        return Promise.reject(new Error('session expired'));
       }
     }
     if (serverMsg) {
@@ -57,11 +55,9 @@ authHttp.interceptors.response.use(
     if (status) {
       return Promise.reject(new Error(`HTTP ${status}`));
     }
-
     if (err.request) {
       return Promise.reject(new Error('Network error'));
     }
-
     return Promise.reject(new Error(err.message));
   },
 );
