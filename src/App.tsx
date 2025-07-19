@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Login } from '@/pages/Login';
 import { Registration } from '@/pages/Registration';
 import { Home } from '@/pages/Home';
@@ -12,17 +12,13 @@ export default function App() {
   const token = AuthStore((s) => s.accessToken);
   const navigate = useNavigate();
   const logout = AuthStore((state) => state.logout);
-  const { pathname } = useLocation();
 
   useEffect(() => {
-    const publicPaths = ['/login', '/register'];
-    if (publicPaths.includes(pathname)) return;
-
     if (token === null) {
       logout();
       navigate('/login');
     }
-  }, [token, logout, navigate, pathname]);
+  }, [token, logout, navigate]);
 
   return (
     <Routes>
