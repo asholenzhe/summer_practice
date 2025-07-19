@@ -46,6 +46,7 @@ authHttp.interceptors.response.use(
         original.headers!['Authorization'] = `Bearer ${access_token}`;
         return authHttp.request(original);
       } catch {
+        AuthStore.getState().logout();
         return Promise.reject(new Error('session expired'));
       }
     }
