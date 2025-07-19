@@ -5,7 +5,7 @@ import { Registration } from '@/pages/Registration';
 import { Home } from '@/pages/Home';
 import { PublicRoute } from '@/PublicRoute';
 import { ProtectedRoute } from '@/ProtectedRoute';
-import { AuthStore } from '@/store/AuthStore';
+import { AuthStore } from '@/store/AuthStore.tsx';
 
 export default function App() {
   const token = AuthStore((s) => s.accessToken);

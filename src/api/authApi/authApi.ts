@@ -1,20 +1,20 @@
-import { authHttp } from '@/api/authApi/authHttp.ts';
-import type {
-  LoginRequest,
-  RegisterRequest,
-  TokenData,
-  TokenResponse,
-} from '@/api/authApi/types.ts';
+import { authHttp } from './authHttp';
+import type { LoginRequest, RegisterRequest, TokenData, TokenResponse } from './types';
 
 export async function register(payload: RegisterRequest): Promise<void> {
   await authHttp.post('/register', payload);
 }
 
 export async function login(payload: LoginRequest): Promise<TokenData> {
-  const response = await authHttp.post<TokenResponse>('/login', payload);
-  const { access_token, refresh_token } = response.data;
+  const { data } = await authHttp.post<TokenResponse>('/login', payload);
   return {
-    accessToken: access_token,
-    refreshToken: refresh_token,
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token,
   };
+}
+export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
+  const { data } = await authHttp.post<TokenResponse>('/refresh', {
+    refresh_token: refreshToken,
+  });
+  return data;
 }
