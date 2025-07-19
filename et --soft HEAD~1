@@ -1,0 +1,19 @@
+[1mdiff --git a/src/api/authApi/authHttp.ts b/src/api/authApi/authHttp.ts[m
+[1mindex b0db6cd..4247dd2 100644[m
+[1m--- a/src/api/authApi/authHttp.ts[m
+[1m+++ b/src/api/authApi/authHttp.ts[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-import axios, { type AxiosError } from 'axios';[m
+[32m+[m[32mimport axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';[m
+ import type { ErrorResponse, RetryableRequestConfig } from '@/api/authApi/types.ts';[m
+ import { AuthStore } from '@/store/AuthStore.tsx';[m
+ import { refreshAccessToken } from '@/api/authApi/authApi.ts';[m
+[36m@@ -13,7 +13,7 @@[m [mconst authHttp = axios.create({[m
+   },[m
+ });[m
+ [m
+[31m-authHttp.interceptors.request.use((config) => {[m
+[32m+[m[32mauthHttp.interceptors.request.use((config: InternalAxiosRequestConfig) => {[m
+   if ([m
+     config.url?.endsWith('/login') ||[m
+     config.url?.endsWith('/register') ||[m

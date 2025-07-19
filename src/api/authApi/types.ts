@@ -1,3 +1,5 @@
+import type { AxiosRequestConfig } from 'axios';
+
 type BaseAuthRequest = {
   email: string;
   password: string;
@@ -23,3 +25,7 @@ export type TokenData = {
 export type ErrorResponse = {
   error: string;
 };
+
+export interface RetryableRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
