@@ -29,3 +29,11 @@ export type ErrorResponse = {
 export interface RetryableRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
+
+export type UserResponse = {
+  email: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  role: string;
+};
