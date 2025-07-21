@@ -29,12 +29,12 @@ export function FormFields<T extends FieldValues>({
           name={field.name as FieldPath<T>}
           render={({ field: formField }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 font-medium">{field.label}</FormLabel>
+              <FormLabel className="text-gray-700 text-base">{field.label}</FormLabel>
               <FormControl>
                 <Input
                   type={field.type || 'text'}
                   placeholder={field.placeholder}
-                  className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+                  className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg text-base"
                   {...formField}
                   onChange={(e) => {
                     formField.onChange(e);

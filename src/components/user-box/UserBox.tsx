@@ -20,7 +20,7 @@ export function UserBox() {
         {initial}
       </Button>
 
-      <span className="text-sm font-medium text-gray-700">
+      <span className="text-xl font-medium text-gray-700">
         {lastName} {firstName}
       </span>
 
@@ -46,7 +46,7 @@ export function UserBox() {
         >
           <button
             onClick={handleLogout}
-            className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+            className="flex items-center w-full text-left px-4 py-2 text-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
           >
             <img src={logoutLogo} alt="Logout logo" className="h-4 w-4 object-contain mr-2" />
             Logout

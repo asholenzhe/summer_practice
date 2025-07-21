@@ -45,7 +45,7 @@ export function BaseForm<T extends FieldValues>({
         onSubmit={handleSubmit(onSubmit)}
         className={`space-y-6 p-8 bg-white rounded-2xl shadow-2xl border border-gray-100
           backdrop-blur-sm transition-all duration-300 ease-in-out
-          hover:shadow-3xl hover:scale-[1.02] transform-gpu
+          hover:shadow-3xl hover:scale-[1.02] transform-gpu text-lg
           ${isSubmitting ? 'opacity-50 pointer-events-none' : ''}`}
       >
         {(title || description) && (
@@ -68,10 +68,7 @@ export function BaseForm<T extends FieldValues>({
         <Button
           type="submit"
           disabled={disabled || isSubmitting}
-          className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600
-            hover:from-blue-700 hover:to-purple-700 text-white font-medium
-            rounded-xl transition-all duration-300 transform hover:scale-[1.02]
-            shadow-lg hover:shadow-xl"
+          className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium text-lg"
         >
           {isSubmitting ? <Spinner sizeClass="w-5 h-5" /> : submitText}
         </Button>
