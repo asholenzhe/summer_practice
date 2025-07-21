@@ -10,10 +10,12 @@ export function Header() {
         max-w-7xl mx-auto
         px-14 py-4
         mt-4
+        flex
+        justify-end
+        items-center
       "
     >
       <UserBox />
-      <div className="flex justify-end items-center w-full"></div>
     </header>
   );
 }

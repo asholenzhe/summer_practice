@@ -32,11 +32,7 @@ authHttp.interceptors.response.use(
     const status = err.response?.status;
     const serverMsg = err.response?.data?.error;
 
-    if (
-      status === 401 &&
-      serverMsg === 'invalid token' &&
-      !(original as RetryableRequestConfig)._retry
-    ) {
+    if (status === 401 && !(original as RetryableRequestConfig)._retry) {
       (original as RetryableRequestConfig)._retry = true;
       try {
         const { access_token, refresh_token } = await refreshAccessToken(
