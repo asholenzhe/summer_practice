@@ -12,15 +12,11 @@ export function AuthForm<T extends FieldValues>(props: BaseFormProps<T>) {
   const defaults = defaultTexts[submitText] || {};
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        <BaseForm<T>
-          {...rest}
-          submitText={submitText}
-          title={title ?? defaults.title}
-          description={description ?? defaults.description}
-        />
-      </div>
-    </div>
+    <BaseForm<T>
+      {...rest}
+      submitText={submitText}
+      title={title ?? defaults.title}
+      description={description ?? defaults.description}
+    />
   );
 }
