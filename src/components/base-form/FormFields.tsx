@@ -9,17 +9,17 @@ export interface FormFieldConfig {
   placeholder?: string;
 }
 
-interface AuthFormFieldsProps<T extends FieldValues> {
+interface FormFieldsProps<T extends FieldValues> {
   control: Control<T>;
   fields: FormFieldConfig[];
   clearError: () => void;
 }
 
-export function AuthFormFields<T extends FieldValues>({
+export function FormFields<T extends FieldValues>({
   control,
   fields,
   clearError,
-}: AuthFormFieldsProps<T>) {
+}: FormFieldsProps<T>) {
   return (
     <>
       {fields.map((field) => (
