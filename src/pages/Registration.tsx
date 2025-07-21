@@ -1,5 +1,5 @@
 import { AuthForm } from '@/components/auth-form/AuthForm.tsx';
-import { registerFields } from '@/AuthFormFieldsConfig.ts';
+import { registerFields } from '@/components/auth-form/AuthFormFieldsConfig.ts';
 import { useRegisterForm } from '@/hooks/useRegisterForm.ts';
 
 export function Registration() {

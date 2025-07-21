@@ -5,11 +5,10 @@ import { Registration } from '@/pages/Registration';
 import { Home } from '@/pages/Home';
 import { PublicRoute } from '@/PublicRoute';
 import { ProtectedRoute } from '@/ProtectedRoute';
-import { AuthStore } from '@/store/AuthStore.tsx';
+import { Profile } from '@/pages/Profile.tsx';
+import { PrivateLayout } from '@/PrivateLayout.tsx';
 
 export default function App() {
-  const token = AuthStore((s) => s.accessToken);
-
   return (
     <Routes>
       <Route element={<PublicRoute />}>
@@ -19,10 +18,13 @@ export default function App() {
       </Route>
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<Home />} />
+        <Route element={<PrivateLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to={token ? '/' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

@@ -1,4 +1,4 @@
-import type { FormFieldConfig } from '@/components/auth-form/AuthFormFields.tsx';
+import type { FormFieldConfig } from '@/components/base-form/FormFields.tsx';
 
 export const loginFields: FormFieldConfig[] = [
   {

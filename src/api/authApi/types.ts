@@ -1,16 +1,18 @@
 import type { AxiosRequestConfig } from 'axios';
 
-type BaseAuthRequest = {
+type AuthCredentials = {
   email: string;
   password: string;
 };
 
-export type LoginRequest = BaseAuthRequest;
-
-export type RegisterRequest = BaseAuthRequest & {
+export type UserNameApi = {
   first_name: string;
   last_name: string;
 };
+
+export type LoginRequest = AuthCredentials;
+
+export type RegisterRequest = AuthCredentials & UserNameApi;
 
 export type TokenResponse = {
   access_token: string;
@@ -29,3 +31,14 @@ export type ErrorResponse = {
 export interface RetryableRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
+
+export type UserResponse = UserNameApi & {
+  email: string;
+  id: string;
+  role: string;
+};
+
+export type UserName = {
+  firstName: string;
+  lastName: string;
+};
