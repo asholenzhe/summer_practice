@@ -4,14 +4,14 @@ import { AuthStore } from '@/store/AuthStore.tsx';
 
 export function useDropdown<T extends HTMLElement = HTMLDivElement>() {
   const logout = AuthStore((state) => state.logout);
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<T>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     function onClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        setOpen(false);
+        setIsOpen(false);
       }
     }
     document.addEventListener('mousedown', onClickOutside);
@@ -20,13 +20,13 @@ export function useDropdown<T extends HTMLElement = HTMLDivElement>() {
     };
   }, []);
 
-  const toggle = () => setOpen((open) => !open);
+  const toggleDropDown = () => setIsOpen((open) => !open);
 
   const goProfile = () => navigate('/profile');
   function handleLogout() {
     logout();
-    setOpen(false);
+    setIsOpen(false);
   }
 
-  return { ref, open, toggle, handleLogout, goProfile };
+  return { ref, isOpen, toggleDropDown, handleLogout, goProfile };
 }

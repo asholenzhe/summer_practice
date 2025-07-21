@@ -9,7 +9,7 @@ export function UserBox() {
   const lastName = UserStore((state) => state.lastName);
   const initial = lastName.charAt(0).toUpperCase();
 
-  const { ref, open, toggle, handleLogout, goProfile } = useDropdown();
+  const { ref, isOpen, toggleDropDown, handleLogout, goProfile } = useDropdown();
 
   return (
     <div ref={ref} className="relative inline-flex items-center space-x-2">
@@ -25,7 +25,7 @@ export function UserBox() {
       </span>
 
       <button
-        onClick={toggle}
+        onClick={toggleDropDown}
         className="
     h-8 w-8
     p-0
@@ -39,7 +39,7 @@ export function UserBox() {
         <img src={downArrow} alt="Toggle menu" className="h-full w-full object-contain" />
       </button>
 
-      {open && (
+      {isOpen && (
         <div
           className="absolute left-0 top-full mt-1 w-full bg-white border rounded shadow
     max-h-60 overflow-auto"
