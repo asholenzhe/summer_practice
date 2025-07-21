@@ -17,7 +17,7 @@ export function Profile() {
           onSubmit={onSubmit}
           submitText="Save"
           title="Profile"
-          description="Edit your profile"
+          disabled={true}
         />
       </div>
     </div>
