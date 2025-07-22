@@ -1,4 +1,4 @@
-import { UserBox } from '@/components/user-box/UserBox.tsx';
+import { UserBox } from '@/core/components/UserBox.tsx';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.svg';
 

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AuthStore } from '@/store/AuthStore';
+import { AuthStore } from '@/core/store/AuthStore.tsx';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import type { LoginRequest } from '@/api/auth/types.ts';

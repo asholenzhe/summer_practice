@@ -1,7 +1,7 @@
-import { AuthForm } from '@/components/auth-form/AuthForm.tsx';
-import { useLoginForm } from '@/hooks/useLoginForm';
-import { loginFields } from '@/components/auth-form/AuthFormFieldsConfig.ts';
-import { AuthLayout } from '@/components/auth-form/AuthLayout.tsx';
+import { AuthForm } from '@/core/components/auth/AuthForm.tsx';
+import { useLoginForm } from '@/core/hooks/auth/useLoginForm.ts';
+import { loginFields } from '@/core/constants/AuthFormFieldsConfig.ts';
+import { AuthLayout } from '@/core/components/auth/AuthLayout.tsx';
 
 export function Login() {
   const { form, onSubmit, disabled, isLoading, serverError, clearError } = useLoginForm();

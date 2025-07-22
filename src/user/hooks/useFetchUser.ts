@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { AuthStore } from '@/store/AuthStore';
-import { UserStore } from '@/store/UserStore';
+import { AuthStore } from '@/core/store/AuthStore.tsx';
+import { UserStore } from '@/user/store/UserStore.tsx';
 import { getUser } from '@/api/user/getUser.ts';
 
 export function useFetchUser(token: string | null) {

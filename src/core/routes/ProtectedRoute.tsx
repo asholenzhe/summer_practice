@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { AuthStore } from '@/store/AuthStore';
-import { useFetchUser } from '@/hooks/useFetchUser.ts';
+import { AuthStore } from '@/core/store/AuthStore.tsx';
+import { useFetchUser } from '@/user/hooks/useFetchUser.ts';
 
 export function ProtectedRoute() {
   const token = AuthStore((s) => s.accessToken);

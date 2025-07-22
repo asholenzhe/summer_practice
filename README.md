@@ -1,69 +1,73 @@
-# React + TypeScript + Vite
+# Проект `summer-practice`
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Цель рефакторинга:** Чётко разделить приложение на слои по обязанностям: API, UI, ядро (сервисы, настройки, роутинг), сторонние компоненты (shadcn), фичи (логика карточек, пользователей и т.д.).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Структура каталогов
 
-## Expanding the ESLint configuration
+```
+src/
+├── api/                 # HTTP-клиенты и контракты серверного API
+│   ├── auth/            # endpoints и типы авторизации (login.ts, register.ts, refreshAccessToken.ts, types.ts)
+│   ├── user/            # endpoints и типы работы с пользовтелем (getUser.ts, types.t)
+│   └── shared/          # axiosInstance, общие типы и константы для API
+│
+├── core/                # «Ядро» приложения
+│   ├── components/      # глобальные UI‑компоненты (Layout, Header и пр.)
+│   ├── constants/       # сквозные константы (пути, ключи локального хранилища и пр.)
+│   ├── hooks/           # общие React‑хуки (useToggle, useDropDown и пр.)
+│   ├── routes/          # конфигурация маршрутов и навигация
+│   └── store/           # глобальный state 
+│
+├── shadcn/              # «Чистые» исходники компонентов shadcn-ui
+│
+├── ui-kit/              # слой, хранящий Обёртки над shadcn‑компонентами и стилизация
+│   ├── components/      # Button, Input, Form и пр.
+│   ├── constants/       # константы, специфичные для ui-kit
+│   └── hooks/           # хуки для компонентов ui-kit
+│
+├── user/                # слой, который хранит всю логику пользователя
+│   ├── constants/       # константы фичи
+│   ├── hooks/           # React‑хуки фичи (useFetchUser и пр.)
+│   ├── pages/           # страницы (Profile)
+│   └── store/           # хранилище данных для пользователя
+│
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Принципы группировки
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+1. **Ясные границы слоёв:** каждый слой отвечает только за свою зону.
+2. **Локальность:** специфичные для фичи компоненты, хуки и типы лежат в папке фичи (`user/`, `card/`).
+3. **Переиспользуемость:** общие UI-компоненты — в `core/components` или `ui-kit/components`(без бизнес-логики).
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+---
+
+## Как добавить новую фичу
+
+1. **Создать директорию фичи** в корне `src/`:
+   ```bash
+   src/<featureName>/
+   ├── components/      # UI-компоненты
+   ├── hooks/           # хуки React
+   ├── utils/           # утилиты и хелперы
+   ├── types/           # типы данных
+   └── store/           # локальный state
+   ```
+2. **API-модуль** (при необходимости) создаётся в `src/api/<featureName>/`:
+   ```bash
+   src/api/<featureName>/
+   ├── <featureMethodName>    # функции-запросы(login, getUser)
+   └── types.ts               # типы API
+   ```
+3. **Маршрутизация:**
+   - Определить route-config в `core/routes/` или `<featureName>/routes.ts`.
+   - Зарегистрировать маршрут в глобальном `<Router>`.
+4. **UI-компоненты:**
+   - Переиспользуемые и без бизнес-логики — в `ui-kit/components`.
+   - С бизнес-логикой — в папке фичи `src/<featureName>/components`.
+5. **State management:**
+   - Глобальный стейт — только в `core/store/`.
+   - Локальный фичевой стейт — в `src/<featureName>/store/`
+

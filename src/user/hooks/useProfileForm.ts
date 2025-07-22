@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserStore } from '@/store/UserStore';
+import { UserStore } from '@/user/store/UserStore.tsx';
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),

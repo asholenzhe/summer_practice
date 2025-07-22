@@ -1,7 +1,7 @@
-import { AuthForm } from '@/components/auth-form/AuthForm.tsx';
-import { registerFields } from '@/components/auth-form/AuthFormFieldsConfig.ts';
-import { useRegisterForm } from '@/hooks/useRegisterForm.ts';
-import { AuthLayout } from '@/components/auth-form/AuthLayout.tsx';
+import { AuthForm } from '@/core/components/auth/AuthForm.tsx';
+import { registerFields } from '@/core/constants/AuthFormFieldsConfig.ts';
+import { useRegisterForm } from '@/core/hooks/auth/useRegisterForm.ts';
+import { AuthLayout } from '@/core/components/auth/AuthLayout.tsx';
 
 export function Registration() {
   const { form, onSubmit, disabled, isLoading, serverError, clearError } = useRegisterForm();
