@@ -1,8 +1,8 @@
 import { Button } from '@/ui-kit/Button.tsx';
 import logoutLogo from '@/assets/logout.svg';
 import profileLogo from '@/assets/profile-logo.svg';
-import { UserStore } from '@/store/UserStore.tsx';
-import { useDropdown } from '@/hooks/useDropDown.ts';
+import { UserStore } from '@/user/store/UserStore.tsx';
+import { useDropdown } from '@/core/hooks/useDropDown.ts';
 import { cn } from '@/shadcn/utils/utils.ts';
 import { Menubar } from '@/ui-kit/menubar/Menubar.tsx';
 import { MenubarMenu } from '@/ui-kit/menubar/MenubarMenu.tsx';

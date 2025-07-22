@@ -1,12 +1,12 @@
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Login } from '@/pages/Login';
-import { Registration } from '@/pages/Registration';
-import { Home } from '@/pages/Home';
-import { PublicRoute } from '@/PublicRoute';
-import { ProtectedRoute } from '@/ProtectedRoute';
-import { Profile } from '@/pages/Profile.tsx';
-import { PrivateLayout } from '@/PrivateLayout.tsx';
+import { Login } from '@/core/pages/auth/Login.tsx';
+import { Registration } from '@/core/pages/auth/Registration.tsx';
+import { Home } from '@/core/pages/Home.tsx';
+import { PublicRoute } from '@/core/routes/PublicRoute.tsx';
+import { ProtectedRoute } from '@/core/routes/ProtectedRoute.tsx';
+import { Profile } from '@/user/pages/Profile.tsx';
+import { PrivateLayout } from '@/core/routes/PrivateLayout.tsx';
 
 export default function App() {
   return (

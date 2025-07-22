@@ -1,9 +1,9 @@
-import { Form } from '@/ui-kit/form/Form.tsx';
 import { Button } from '@/ui-kit/Button.tsx';
 import { Spinner } from '@/ui-kit/Spinner.tsx';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import { type FormFieldConfig, FormFields } from '@/ui-kit/base-form/FormFields.tsx';
 import { Link } from 'react-router-dom';
+import { Form } from '@/ui-kit/form/Form.tsx';
 
 export interface BaseFormProps<T extends FieldValues> {
   form: UseFormReturn<T>;

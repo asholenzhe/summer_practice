@@ -1,6 +1,6 @@
 import { BaseForm } from '@/ui-kit/base-form/BaseForm.tsx';
-import { useProfileForm } from '@/hooks/useProfileForm.ts';
-import { profileFields } from '@/profileFields.ts';
+import { useProfileForm } from '@/user/hooks/useProfileForm.ts';
+import { profileFields } from '@/user/constants/profileFields.ts';
 
 export function Profile() {
   const { form, onSubmit } = useProfileForm();

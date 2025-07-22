@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import type { ErrorResponse, RetryableRequestConfig } from './types';
-import { AuthStore } from '@/store/AuthStore.tsx';
+import { AuthStore } from '@/core/store/AuthStore.tsx';
 import { refreshAccessToken } from '@/api/auth/refreshAccessToken.ts';
 
 const NO_AUTH_PATHS = ['/login', '/register', '/refresh'];
