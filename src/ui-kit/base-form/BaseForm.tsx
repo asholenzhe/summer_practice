@@ -1,8 +1,9 @@
-import { Form } from '@/shadcn/components/Form.tsx';
-import { Button } from '@/shadcn/components/Button.tsx';
-import { Spinner } from '@/shadcn/components/Spinner.tsx';
+import { Form } from '@/ui-kit/form/Form.tsx';
+import { Button } from '@/ui-kit/Button.tsx';
+import { Spinner } from '@/ui-kit/Spinner.tsx';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
-import { type FormFieldConfig, FormFields } from '@/components/base-form/FormFields.tsx';
+import { type FormFieldConfig, FormFields } from '@/ui-kit/base-form/FormFields.tsx';
+import { Link } from 'react-router-dom';
 
 export interface BaseFormProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -75,12 +76,12 @@ export function BaseForm<T extends FieldValues>({
 
         {linkTo && linkText && (
           <div className="text-center pt-4">
-            <a
-              href={linkTo}
+            <Link
+              to={linkTo}
               className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 hover:underline"
             >
               {linkText}
-            </a>
+            </Link>
           </div>
         )}
       </form>

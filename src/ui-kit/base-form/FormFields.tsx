@@ -1,12 +1,10 @@
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shadcn/components/Form.tsx';
-import { Input } from '@/shadcn/components/Input.tsx';
+import { FormMessage } from '@/ui-kit/form/FormMessage.tsx';
+import { FormField } from '@/ui-kit/form/FormField.tsx';
+import { FormItem } from '@/ui-kit/form/FormItem.tsx';
+import { FormLabel } from '@/ui-kit/form/FormLabel.tsx';
+import { FormControl } from '@/ui-kit/form/FormControl.tsx';
+import { Input } from '@/ui-kit/Input.tsx';
 
 export interface FormFieldConfig {
   name: string;

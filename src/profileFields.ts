@@ -1,4 +1,4 @@
-import type { FormFieldConfig } from '@/components/base-form/FormFields.tsx';
+import type { FormFieldConfig } from '@/ui-kit/base-form/FormFields.tsx';
 
 export const profileFields: FormFieldConfig[] = [
   {
