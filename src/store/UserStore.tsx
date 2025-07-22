@@ -1,5 +1,5 @@
-import type { UserName } from '@/api/authApi/types.ts';
 import { create } from 'zustand';
+import type { UserName } from '@/api/user/types.ts';
 
 export interface UserState extends UserName {
   setUser: (user: { firstName: string; lastName: string }) => void;

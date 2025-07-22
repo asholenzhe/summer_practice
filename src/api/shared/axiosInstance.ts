@@ -1,11 +1,11 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import type { ErrorResponse, RetryableRequestConfig } from './types';
 import { AuthStore } from '@/store/AuthStore.tsx';
-import { refreshAccessToken } from '@/api/authApi/authApi.ts';
+import { refreshAccessToken } from '@/api/auth/refreshAccessToken.ts';
 
 const NO_AUTH_PATHS = ['/login', '/register', '/refresh'];
 
-const authHttp = axios.create({
+const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ const authHttp = axios.create({
   },
 });
 
-authHttp.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const url = config.url ?? '';
   if (NO_AUTH_PATHS.some((path) => url.endsWith(path))) {
     return config;
@@ -25,7 +25,7 @@ authHttp.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-authHttp.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (res) => res,
   async (err: AxiosError<ErrorResponse>) => {
     const original = err.config!;
@@ -40,7 +40,7 @@ authHttp.interceptors.response.use(
         );
         AuthStore.getState().setTokens({ accessToken: access_token, refreshToken: refresh_token });
         original.headers!['Authorization'] = `Bearer ${access_token}`;
-        return authHttp.request(original);
+        return axiosInstance.request(original);
       } catch {
         AuthStore.getState().logout();
         return Promise.reject(new Error('session expired'));
@@ -59,4 +59,4 @@ authHttp.interceptors.response.use(
   },
 );
 
-export { authHttp };
+export { axiosInstance };

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { TokenData } from '@/api/authApi/types.ts';
+import type { TokenData } from '@/api/auth/types.ts';
 
 interface AuthState {
   isLoading: boolean;
