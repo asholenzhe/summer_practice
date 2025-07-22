@@ -1,6 +1,6 @@
-import { Form } from '@/components/ui/Form.tsx';
-import { Button } from '@/components/ui/Button.tsx';
-import { Spinner } from '@/components/ui/Spinner.tsx';
+import { Form } from '@/shadcn/components/Form.tsx';
+import { Button } from '@/shadcn/components/Button.tsx';
+import { Spinner } from '@/shadcn/components/Spinner.tsx';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import { type FormFieldConfig, FormFields } from '@/components/base-form/FormFields.tsx';
 
