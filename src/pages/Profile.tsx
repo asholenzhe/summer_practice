@@ -1,4 +1,4 @@
-import { BaseForm } from '@/components/base-form/BaseForm.tsx';
+import { BaseForm } from '@/ui-kit/base-form/BaseForm.tsx';
 import { useProfileForm } from '@/hooks/useProfileForm.ts';
 import { profileFields } from '@/profileFields.ts';
 

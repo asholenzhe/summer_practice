@@ -1,6 +1,6 @@
 import type { FieldValues } from 'react-hook-form';
-import type { BaseFormProps } from '@/components/base-form/BaseForm.tsx';
-import { BaseForm } from '@/components/base-form/BaseForm.tsx';
+import type { BaseFormProps } from '@/ui-kit/base-form/BaseForm.tsx';
+import { BaseForm } from '@/ui-kit/base-form/BaseForm.tsx';
 
 export function AuthForm<T extends FieldValues>(props: BaseFormProps<T>) {
   const { submitText, title, description, ...rest } = props;
