@@ -1,17 +1,15 @@
-import { Button } from '@/shadcn/components/Button.tsx';
+import { Button } from '@/ui-kit/Button.tsx';
 import logoutLogo from '@/assets/logout.svg';
 import profileLogo from '@/assets/profile-logo.svg';
 import { UserStore } from '@/store/UserStore.tsx';
 import { useDropdown } from '@/hooks/useDropDown.ts';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from '@/shadcn/components/Menubar.tsx';
 import { cn } from '@/shadcn/utils/utils.ts';
+import { Menubar } from '@/ui-kit/menubar/Menubar.tsx';
+import { MenubarMenu } from '@/ui-kit/menubar/MenubarMenu.tsx';
+import { MenubarTrigger } from '@/ui-kit/menubar/MenubarTrigger.tsx';
+import { MenubarContent } from '@/ui-kit/menubar/MenubarContent.tsx';
+import { MenubarItem } from '@/ui-kit/menubar/MenubarItem.tsx';
+import { MenubarSeparator } from '@/ui-kit/menubar/MenubarSeparator.tsx';
 
 export function UserBox() {
   const firstName = UserStore((state) => state.firstName);
