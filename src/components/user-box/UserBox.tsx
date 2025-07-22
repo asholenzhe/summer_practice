@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/shadcn/components/Button.tsx';
 import logoutLogo from '@/assets/logout.svg';
 import profileLogo from '@/assets/profile-logo.svg';
 import { UserStore } from '@/store/UserStore.tsx';
@@ -10,8 +10,8 @@ import {
   MenubarMenu,
   MenubarSeparator,
   MenubarTrigger,
-} from '@/components/ui/Menubar.tsx';
-import { cn } from '@/lib/utils.ts';
+} from '@/shadcn/components/Menubar.tsx';
+import { cn } from '@/shadcn/utils/utils.ts';
 
 export function UserBox() {
   const firstName = UserStore((state) => state.firstName);
