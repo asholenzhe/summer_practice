@@ -1,4 +1,4 @@
-import type { UserNameApi } from '@/api/authApi/types.ts';
+import type { UserNameApi } from '@/api/auth/types.ts';
 
 export type UserResponse = UserNameApi & {
   email: string;

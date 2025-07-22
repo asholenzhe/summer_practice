@@ -3,8 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthStore } from '@/store/AuthStore';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { login } from '@/api/authApi/authApi.ts';
-import type { LoginRequest } from '@/api/authApi/types.ts';
+import type { LoginRequest } from '@/api/auth/types.ts';
+import { login } from '@/api/auth/login.ts';
 
 const emailPattern = /^\S+@\S+\.\S+$/;
 
