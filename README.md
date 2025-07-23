@@ -18,7 +18,7 @@ src/
 │   ├── constants/       # сквозные константы (пути, ключи локального хранилища и пр.)
 │   ├── hooks/           # общие React‑хуки (useToggle, useDropDown и пр.)
 │   ├── routes/          # конфигурация маршрутов и навигация
-│   └── store/           # глобальный state 
+│   └── store/           # глобальный state
 │
 ├── shadcn/              # «Чистые» исходники компонентов shadcn-ui
 │
@@ -70,4 +70,3 @@ src/
 5. **State management:**
    - Глобальный стейт — только в `core/store/`.
    - Локальный фичевой стейт — в `src/<featureName>/store/`
-

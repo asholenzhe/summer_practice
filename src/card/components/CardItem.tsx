@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import type { Card } from '@/api/card/types.ts';
 
 export function CardItem({ card }: { card: Card }) {
+  const [imageError, setImageError] = useState(false);
+
   const examples = card.examples ?? [];
-  const hasImage = Boolean(card.image_url?.trim());
+  const hasImage = Boolean(card.image_url?.trim()) && !imageError;
+
   function capitalizeFirstLetter(text: string) {
     if (!text) return '';
     return text[0].toUpperCase() + text.slice(1);
@@ -36,6 +40,7 @@ export function CardItem({ card }: { card: Card }) {
         <img
           src={card.image_url}
           alt={card.word}
+          onError={() => setImageError(true)}
           className="block mt-2 w-full h-32 object-contain rounded bg-gray-100"
         />
       )}

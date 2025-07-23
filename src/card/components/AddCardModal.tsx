@@ -8,7 +8,6 @@ import { DialogHeader } from '@/ui-kit/dialog/DialogHeader.tsx';
 import { DialogTitle } from '@/ui-kit/dialog/DialogTitle.tsx';
 import { DialogDescription } from '@/ui-kit/dialog/DialogDescription.tsx';
 import { CardForm } from '@/card/components/CardForm.tsx';
-import { DialogClose } from '@/ui-kit/dialog/DialogClose.tsx';
 
 export function AddCardModal() {
   const [open, setOpen] = useState(false);
@@ -21,19 +20,20 @@ export function AddCardModal() {
 
       <DialogOverlay className="fixed inset-0 bg-black bg-opacity-40" />
 
-      <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-xl shadow-xl max-w-lg max-h-[80vh] overflow-auto">
-        <DialogHeader>
-          <DialogTitle>Add New Card</DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
+      <DialogContent
+        className="fixed top-1/2 left-1/2
+        -translate-x-1/2 -translate-y-1/2
+        bg-white p-6 rounded-xl shadow-xl max-w-lg
+        overflow-hidden"
+      >
+        <div className="max-h-[80vh] overflow-auto">
+          <DialogHeader>
+            <DialogTitle>Add New Card</DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
 
-        <CardForm onSuccess={() => setOpen(false)} />
-
-        <DialogClose asChild>
-          <Button variant="ghost" className="mt-4">
-            Cancel
-          </Button>
-        </DialogClose>
+          <CardForm onSuccess={() => setOpen(false)} />
+        </div>
       </DialogContent>
     </Dialog>
   );
