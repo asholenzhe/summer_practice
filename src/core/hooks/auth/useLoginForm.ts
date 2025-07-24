@@ -5,22 +5,13 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import type { LoginRequest } from '@/api/auth/types.ts';
 import { login } from '@/api/auth/login.ts';
-
-const emailPattern = /^\S+@\S+\.\S+$/;
-
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(8, { message: 'Email must be at least 8 characters' })
-    .regex(emailPattern, { message: 'Invalid email format' }),
-  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
-});
+import { loginSchema } from '@/core/schemas/auth/loginSchema.ts';
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 
 export function useLoginForm() {
   const navigate = useNavigate();
-  const { isLoading, error: serverError, setLoading, setErrorState } = AuthStore();
+  const { isLoading, error: serverError, setIsLoading, setErrorState } = AuthStore();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -43,7 +34,7 @@ export function useLoginForm() {
   const clearError = () => setErrorState(null);
 
   async function loginUser(email: string, password: string) {
-    setLoading(true);
+    setIsLoading(true);
     setErrorState(null);
     const payload: LoginRequest = {
       email: email,
@@ -57,7 +48,7 @@ export function useLoginForm() {
       setErrorState(message);
       throw e;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 

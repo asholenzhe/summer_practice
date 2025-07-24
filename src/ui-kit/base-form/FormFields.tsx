@@ -5,12 +5,14 @@ import { FormLabel } from '@/ui-kit/form/FormLabel.tsx';
 import { FormControl } from '@/ui-kit/form/FormControl.tsx';
 import { Input } from '@/ui-kit/Input.tsx';
 import { FormField } from '@/ui-kit/form/FormField.tsx';
+import { Select } from '@/ui-kit/Select.tsx';
 
 export interface FormFieldConfig {
   name: string;
   label: string;
-  type?: string;
+  type?: 'email' | 'password' | 'text' | 'url' | 'select';
   placeholder?: string;
+  options?: { value: string; label: string }[];
 }
 
 interface FormFieldsProps<T extends FieldValues> {
@@ -33,18 +35,32 @@ export function FormFields<T extends FieldValues>({
           name={field.name as FieldPath<T>}
           render={({ field: formField }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 text-base">{field.label}</FormLabel>
+              <FormLabel className="flex flex-col items-start text-gray-700 text-base">
+                {field.label}
+              </FormLabel>
               <FormControl>
-                <Input
-                  type={field.type || 'text'}
-                  placeholder={field.placeholder}
-                  className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg text-base"
-                  {...formField}
-                  onChange={(e) => {
-                    formField.onChange(e);
-                    clearError();
-                  }}
-                />
+                {field.type === 'select' && field.options ? (
+                  <Select
+                    value={formField.value}
+                    onChange={(val) => {
+                      formField.onChange(val);
+                      clearError();
+                    }}
+                    placeholder={field.placeholder}
+                    options={field.options}
+                  />
+                ) : (
+                  <Input
+                    type={field.type || 'text'}
+                    placeholder={field.placeholder}
+                    className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg text-base w-full"
+                    {...formField}
+                    onChange={(e) => {
+                      formField.onChange(e);
+                      clearError();
+                    }}
+                  />
+                )}
               </FormControl>
               <FormMessage />
             </FormItem>

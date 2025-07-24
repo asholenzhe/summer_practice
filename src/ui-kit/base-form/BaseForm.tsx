@@ -1,23 +1,25 @@
-import { Button } from '@/ui-kit/Button.tsx';
 import { Spinner } from '@/ui-kit/Spinner.tsx';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import { Button } from '@/ui-kit/Button.tsx';
 import { type FormFieldConfig, FormFields } from '@/ui-kit/base-form/FormFields.tsx';
-import { Link } from 'react-router-dom';
 import { Form } from '@/ui-kit/form/Form.tsx';
+import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import type { ReactNode } from 'react';
 
 export interface BaseFormProps<T extends FieldValues> {
   form: UseFormReturn<T>;
-  onSubmit: (data: T) => Promise<void> | void;
+  onSubmit: (data: T) => void | Promise<void>;
   fields: FormFieldConfig[];
   submitText: string;
   title?: string;
   description?: string;
   error?: string | null;
-  linkTo?: string;
-  linkText?: string;
   disabled?: boolean;
   isLoading?: boolean;
   clearError?: () => void;
+  linkTo?: string;
+  linkText?: string;
+  children?: ReactNode;
 }
 
 export function BaseForm<T extends FieldValues>({
@@ -28,10 +30,12 @@ export function BaseForm<T extends FieldValues>({
   title,
   description,
   error,
+  disabled = false,
+  isLoading = false,
+  clearError = () => {},
+  children,
   linkTo,
   linkText,
-  disabled = false,
-  clearError = () => {},
 }: BaseFormProps<T>) {
   const {
     handleSubmit,
@@ -44,36 +48,20 @@ export function BaseForm<T extends FieldValues>({
       <form
         noValidate
         onSubmit={handleSubmit(onSubmit)}
-        className={`space-y-6 p-8 bg-white rounded-2xl shadow-2xl border border-gray-100
-          backdrop-blur-sm transition-all duration-300 ease-in-out
-          hover:shadow-3xl hover:scale-[1.02] transform-gpu text-lg
-          ${isSubmitting ? 'opacity-50 pointer-events-none' : ''}`}
+        className={`space-y-6 p-6 bg-white rounded-lg shadow-lg ${
+          isSubmitting || isLoading ? 'opacity-50 pointer-events-none' : ''
+        }`}
       >
-        {(title || description) && (
-          <div className="text-center mb-8">
-            {title && <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>}
-            {description && <p className="text-gray-600">{description}</p>}
-          </div>
-        )}
+        {title && <h2 className="text-xl font-bold">{title}</h2>}
+        {description && <p className="text-gray-600 mb-4">{description}</p>}
 
         <div className="space-y-4">
           <FormFields control={control} fields={fields} clearError={clearError} />
         </div>
 
-        {error && (
-          <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-200">
-            {error}
-          </div>
-        )}
+        {children}
 
-        <Button
-          type="submit"
-          disabled={disabled || isSubmitting}
-          className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium text-lg"
-        >
-          {isSubmitting ? <Spinner sizeClass="w-5 h-5" /> : submitText}
-        </Button>
-
+        {error && <div className="text-red-500 text-sm">{error}</div>}
         {linkTo && linkText && (
           <div className="text-center pt-4">
             <Link
@@ -84,6 +72,10 @@ export function BaseForm<T extends FieldValues>({
             </Link>
           </div>
         )}
+
+        <Button type="submit" disabled={disabled || isSubmitting}>
+          {isSubmitting ? <Spinner sizeClass="w-5 h-5" /> : submitText}
+        </Button>
       </form>
     </Form>
   );
