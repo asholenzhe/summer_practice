@@ -3,22 +3,22 @@ import type { Card } from '@/api/card/types.ts';
 
 export interface CardsState {
   cards: Card[];
-  loading: boolean;
+  isLoading: boolean;
   error: string | null;
   setCards: (cards: Card[]) => void;
   addCard: (card: Card) => void;
-  setLoading: (flag: boolean) => void;
+  setIsLoading: (flag: boolean) => void;
   setError: (msg: string | null) => void;
   clearCards: () => void;
 }
 
 export const CardsStore = create<CardsState>((set) => ({
   cards: [],
-  loading: false,
+  isLoading: false,
   error: null,
   setCards: (cards) => set({ cards }),
   addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
-  setLoading: (flag) => set({ loading: flag }),
+  setIsLoading: (flag) => set({ isLoading: flag }),
   setError: (msg) => set({ error: msg }),
-  clearCards: () => set({ cards: [], error: null, loading: false }),
+  clearCards: () => set({ cards: [], error: null, isLoading: false }),
 }));

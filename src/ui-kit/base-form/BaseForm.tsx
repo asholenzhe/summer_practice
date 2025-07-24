@@ -4,6 +4,7 @@ import { type FormFieldConfig, FormFields } from '@/ui-kit/base-form/FormFields.
 import { Form } from '@/ui-kit/form/Form.tsx';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import type { ReactNode } from 'react';
 
 export interface BaseFormProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -18,7 +19,7 @@ export interface BaseFormProps<T extends FieldValues> {
   clearError?: () => void;
   linkTo?: string;
   linkText?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export function BaseForm<T extends FieldValues>({

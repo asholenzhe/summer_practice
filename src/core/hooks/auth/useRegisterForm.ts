@@ -5,31 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { AuthStore } from '@/core/store/AuthStore.tsx';
 import type { RegisterRequest } from '@/api/auth/types.ts';
 import { register } from '@/api/auth/register.ts';
-
-const emailPattern = /^\S+@\S+\.\S+$/;
-
-const registerSchema = z
-  .object({
-    email: z
-      .string()
-      .min(8, { message: 'Email must be at least 8 characters' })
-      .regex(emailPattern, { message: 'Invalid email format' }),
-    firstName: z.string(),
-    lastName: z.string(),
-    password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
-  });
+import { registerSchema } from '@/core/schemas/auth/registerSchema.ts';
 
 type RegistrationFormData = z.infer<typeof registerSchema>;
 
 export function useRegisterForm() {
   const navigate = useNavigate();
 
-  const { error: serverError, setErrorState, setLoading, isLoading } = AuthStore((s) => s);
+  const { error: serverError, setErrorState, setIsLoading, isLoading } = AuthStore((s) => s);
 
   const form = useForm<RegistrationFormData>({
     resolver: zodResolver(registerSchema),
@@ -75,7 +58,7 @@ export function useRegisterForm() {
     lastName: string,
     password: string,
   ) {
-    setLoading(true);
+    setIsLoading(true);
     setErrorState(null);
     const payload: RegisterRequest = {
       email: email,
@@ -90,7 +73,7 @@ export function useRegisterForm() {
       setErrorState(text);
       throw e;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 

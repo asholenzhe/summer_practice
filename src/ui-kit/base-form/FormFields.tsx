@@ -5,11 +5,7 @@ import { FormLabel } from '@/ui-kit/form/FormLabel.tsx';
 import { FormControl } from '@/ui-kit/form/FormControl.tsx';
 import { Input } from '@/ui-kit/Input.tsx';
 import { FormField } from '@/ui-kit/form/FormField.tsx';
-import { Select } from '@/ui-kit/select/Select.tsx';
-import { SelectTrigger } from '@/ui-kit/select/SelectTrigger.tsx';
-import { SelectValue } from '@/ui-kit/select/SelectValue.tsx';
-import { SelectContent } from '@/ui-kit/select/SelectContent.tsx';
-import { SelectItem } from '@/ui-kit/select/SelectItem.tsx';
+import { Select } from '@/ui-kit/Select.tsx';
 
 export interface FormFieldConfig {
   name: string;
@@ -39,27 +35,20 @@ export function FormFields<T extends FieldValues>({
           name={field.name as FieldPath<T>}
           render={({ field: formField }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 text-base">{field.label}</FormLabel>
+              <FormLabel className="flex flex-col items-start text-gray-700 text-base">
+                {field.label}
+              </FormLabel>
               <FormControl>
                 {field.type === 'select' && field.options ? (
                   <Select
                     value={formField.value}
-                    onValueChange={(val) => {
+                    onChange={(val) => {
                       formField.onChange(val);
                       clearError();
                     }}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Choose..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {field.options.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    placeholder={field.placeholder}
+                    options={field.options}
+                  />
                 ) : (
                   <Input
                     type={field.type || 'text'}

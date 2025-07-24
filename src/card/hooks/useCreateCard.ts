@@ -4,13 +4,11 @@ import { useCallback } from 'react';
 import { CardsStore } from '@/card/store/CardStore.ts';
 
 export function useCreateCard() {
-  const addCard = CardsStore((s) => s.addCard);
-  const setLoading = CardsStore((s) => s.setLoading);
-  const setError = CardsStore((s) => s.setError);
+  const { setIsLoading, setError, addCard } = CardsStore((store) => store);
 
   const createAndStoreCard = useCallback(
     async (payload: CreateCardRequest) => {
-      setLoading(true);
+      setIsLoading(true);
       setError(null);
       try {
         const newCard: Card = await createCard(payload);
@@ -22,10 +20,10 @@ export function useCreateCard() {
           setError('Creation failed');
         }
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     },
-    [addCard, setLoading, setError],
+    [addCard, setIsLoading, setError],
   );
 
   return { createAndStoreCard };

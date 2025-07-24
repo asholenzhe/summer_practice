@@ -3,38 +3,7 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateCard } from '@/card/hooks/useCreateCard.ts';
 import { CardsStore } from '@/card/store/CardStore.ts';
-
-const urlRegex = new RegExp(
-  "^(https?:\\/\\/)((([a-zA-Z0-9$_.+!*',;:&=-]|%[0-9a-fA-F]{2})+@)?" +
-    '([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\\.)+' +
-    '[a-zA-Z]{2,63})' +
-    '(:\\d{1,5})?' +
-    '(\\/[a-zA-Z0-9$_.+!*,;:@&=?/~#%()\\-]*)*$',
-  'i',
-);
-export const createCardSchema = z.object({
-  word: z.string().min(1, 'Word is required'),
-  russian_translation: z.string().min(1, 'Translation is required'),
-  description: z.string().min(1, 'Description is required'),
-  part_of_speech: z.enum([
-    'noun',
-    'verb',
-    'adjective',
-    'adverb',
-    'pronoun',
-    'preposition',
-    'conjunction',
-    'interjection',
-  ]),
-  examples: z.array(z.string()).optional(),
-  image_url: z
-    .string()
-    .regex(urlRegex, 'Invalid url format')
-    .or(z.literal(''))
-    .or(z.undefined())
-    .default('')
-    .optional(),
-});
+import { createCardSchema } from '@/card/schemas/createCardSchema.ts';
 
 export type CreateCardFormValues = z.infer<typeof createCardSchema>;
 
@@ -55,7 +24,7 @@ export function useCreateCardForm() {
   });
 
   const { createAndStoreCard } = useCreateCard();
-  const { loading, error, setError } = CardsStore((s) => s);
+  const { isLoading, error, setError } = CardsStore((store) => store);
 
   const onSubmit = async (values: CreateCardFormValues) => {
     const payload = {
@@ -69,7 +38,7 @@ export function useCreateCardForm() {
   return {
     form,
     onSubmit,
-    loading,
+    isLoading,
     error,
     clearError: () => setError(null),
   };

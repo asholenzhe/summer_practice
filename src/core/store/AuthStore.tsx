@@ -4,7 +4,7 @@ import type { TokenData } from '@/api/auth/types.ts';
 interface AuthState {
   isLoading: boolean;
   error: string | null;
-  setLoading: (loading: boolean) => void;
+  setIsLoading: (loading: boolean) => void;
   setErrorState: (message: string | null) => void;
   accessToken: string | null;
   refreshToken: string | null;
@@ -21,7 +21,7 @@ export const AuthStore = create<AuthState>((set) => ({
   accessToken: initialAccess,
   refreshToken: initialRefresh,
 
-  setLoading: (loading) => set({ isLoading: loading }),
+  setIsLoading: (loading) => set({ isLoading: loading }),
   setErrorState: (message) => set({ error: message }),
 
   setTokens: ({ accessToken, refreshToken }) => {

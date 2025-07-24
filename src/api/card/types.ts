@@ -1,9 +1,19 @@
+export type PartOfSpeech =
+  | 'noun'
+  | 'verb'
+  | 'adjective'
+  | 'adverb'
+  | 'pronoun'
+  | 'preposition'
+  | 'conjunction'
+  | 'interjection';
+
 type BaseCard = {
   word: string;
   russian_translation: string;
   description: string;
   examples?: string[];
-  part_of_speech: string;
+  part_of_speech: PartOfSpeech;
   image_url?: string;
 };
 
@@ -12,7 +22,7 @@ export type CreateCardRequest = BaseCard;
 export interface Card extends BaseCard {
   id: string;
   user_id: string;
-  current_level: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  current_level: number;
   next_review_date: string;
   created_at: string;
   updated_at: string;

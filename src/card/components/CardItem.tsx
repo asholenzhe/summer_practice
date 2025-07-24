@@ -7,25 +7,18 @@ export function CardItem({ card }: { card: Card }) {
   const examples = card.examples ?? [];
   const hasImage = Boolean(card.image_url?.trim()) && !imageError;
 
-  function capitalizeFirstLetter(text: string) {
-    if (!text) return '';
-    return text[0].toUpperCase() + text.slice(1);
-  }
-
   return (
     <div className="border border-[#9810fa] rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow duration-200 max-w-sm text-left">
-      <h2 className="text-xl font-bold mb-2 text-[#9810fa]">{capitalizeFirstLetter(card.word)}</h2>
+      <h2 className="text-xl font-bold mb-2 text-[#9810fa]">{card.word}</h2>
 
       <p className="text-gray-800 text-sm mb-1">
-        <span className="font-medium">Translation:</span>{' '}
-        {capitalizeFirstLetter(card.russian_translation)}
+        <span className="font-medium">Translation:</span> {card.russian_translation}
       </p>
       <p className="text-gray-800 text-sm mb-1">
-        <span className="font-medium">Description:</span> {capitalizeFirstLetter(card.description)}
+        <span className="font-medium">Description:</span> {card.description}
       </p>
       <p className="text-gray-800 text-sm mb-2">
-        <span className="font-medium">Part of speech:</span>{' '}
-        {capitalizeFirstLetter(card.part_of_speech)}
+        <span className="font-medium">Part of speech:</span> {card.part_of_speech}
       </p>
 
       {examples.length > 0 && (

@@ -3,24 +3,24 @@ import { getCards } from '@/api/card/getCards.ts';
 import { CardsStore } from '@/card/store/CardStore.ts';
 
 export function useFetchCards() {
-  const { setCards, setLoading, setError } = CardsStore((s) => s);
+  const { setCards, setIsLoading, setError } = CardsStore((store) => store);
 
   const fetchCards = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const res = await getCards();
       setCards(res.cards);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
       } else {
         setError('Fetch failed');
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [setCards, setLoading, setError]);
+  }, [setCards, setIsLoading, setError]);
 
   return {
     fetchCards,
