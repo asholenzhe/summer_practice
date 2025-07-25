@@ -8,6 +8,7 @@ import { ProtectedRoute } from '@/core/routes/ProtectedRoute.tsx';
 import { Profile } from '@/user/pages/Profile.tsx';
 import { PrivateLayout } from '@/core/routes/PrivateLayout.tsx';
 import { CardPage } from '@/card/pages/CardPage.tsx';
+import StudyPage from '@/card/pages/StudyPage.tsx';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/cards" element={<CardPage />} />
+          <Route path="/study" element={<StudyPage />} />
         </Route>
       </Route>
 
