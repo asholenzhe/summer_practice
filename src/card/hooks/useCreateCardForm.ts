@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateCard } from '@/card/hooks/useCreateCard.ts';
-import { CardsStore } from '@/card/store/CardStore.ts';
+import { CardsStore } from '@/card/store/CardsStore.ts';
 import { createCardSchema } from '@/card/schemas/createCardSchema.ts';
 
 export type CreateCardFormValues = z.infer<typeof createCardSchema>;

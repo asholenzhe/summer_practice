@@ -1,6 +1,6 @@
+import { useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect, useCallback, useRef } from 'react';
-import { type CardsState, CardsStore } from '@/card/store/CardStore.ts';
+import { type CardsState, CardsStore } from '@/card/store/CardsStore.ts';
 import { getCardsWithParams } from '@/api/card/getCardsWithParams.ts';
 import type { Card } from '@/api/card/types.ts';
 
@@ -19,52 +19,18 @@ export function useCardTable() {
     setCards,
     setIsLoading,
     setError,
-    setPage,
     setSortBy,
     setSortOrder,
     setTotalPages,
+    setPage: rawSetPage,
   } = CardsStore((state) => state);
 
-  const isFirstLoad = useRef(true);
-
-  const fetchCards = useCallback(async () => {
-    if (isFirstLoad.current) {
-      setIsLoading(true);
-    }
-    setError(null);
-    try {
-      const result = await getCardsWithParams({
-        page,
-        limit,
-        sort_by: sortBy,
-        sort_order: sortOrder,
-      });
-      const normalized: Card[] = result.cards.map((card) => ({
-        ...card,
-        examples: card.examples ?? [],
-      }));
-      setCards(normalized);
-      setTotalPages(result.total_pages);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Unknown error');
-    } finally {
-      if (isFirstLoad.current) {
-        setIsLoading(false);
-        isFirstLoad.current = false;
-      }
-    }
-  }, [page, limit, sortBy, sortOrder, setCards, setIsLoading, setError, setTotalPages]);
-
-  useEffect(() => {
-    fetchCards();
-  }, [fetchCards]);
-
   const updateSearchParams = useCallback(
-    (page: number, sortBy: CardsState['sortBy'], sortOrder: CardsState['sortOrder']) => {
+    (newPage: number, newSortBy: CardsState['sortBy'], newSortOrder: CardsState['sortOrder']) => {
       setSearchParams({
-        page: page.toString(),
-        sort_by: sortBy,
-        sort_order: sortOrder,
+        page: newPage.toString(),
+        sort_by: newSortBy,
+        sort_order: newSortOrder,
       });
     },
     [setSearchParams],
@@ -79,11 +45,11 @@ export function useCardTable() {
       } else {
         setSortBy(field);
         setSortOrder('asc');
-        setPage(1);
+        rawSetPage(1);
         updateSearchParams(1, field, 'asc');
       }
     },
-    [sortBy, sortOrder, page, setPage, updateSearchParams, setSortBy, setSortOrder],
+    [sortBy, sortOrder, page, setSortBy, setSortOrder, rawSetPage, updateSearchParams],
   );
 
   useEffect(() => {
@@ -91,22 +57,65 @@ export function useCardTable() {
     const sortByParam = (searchParams.get('sort_by') as CardsState['sortBy']) || 'created_at';
     const sortOrderParam = (searchParams.get('sort_order') as CardsState['sortOrder']) || 'asc';
 
-    setPage(pageParam);
-    setSortBy(sortByParam);
-    setSortOrder(sortOrderParam);
-  }, [searchParams, setPage, setSortBy, setSortOrder]);
+    const fetchCards = async () => {
+      rawSetPage(pageParam);
+      setSortBy(sortByParam);
+      setSortOrder(sortOrderParam);
+      setIsLoading(true);
+      setError(null);
 
-  const goNext = () => {
-    const newPage = Math.min(page + 1, totalPages);
-    setPage(newPage);
-    updateSearchParams(newPage, sortBy, sortOrder);
-  };
+      try {
+        const result = await getCardsWithParams({
+          page: pageParam,
+          limit,
+          sort_by: sortByParam,
+          sort_order: sortOrderParam,
+        });
+        const normalized: Card[] = result.cards.map((card) => ({
+          ...card,
+          examples: card.examples ?? [],
+        }));
+        setCards(normalized);
+        setTotalPages(Math.ceil(result.total_pages));
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : 'Unknown error');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const goPrev = () => {
-    const newPage = Math.max(page - 1, 1);
-    setPage(newPage);
-    updateSearchParams(newPage, sortBy, sortOrder);
-  };
+    fetchCards();
+  }, [
+    searchParams,
+    limit,
+    rawSetPage,
+    setSortBy,
+    setSortOrder,
+    setIsLoading,
+    setError,
+    setCards,
+    setTotalPages,
+  ]);
+
+  const goNext = useCallback(() => {
+    const next = Math.min(page + 1, totalPages);
+    rawSetPage(next);
+    updateSearchParams(next, sortBy, sortOrder);
+  }, [page, totalPages, rawSetPage, sortBy, sortOrder, updateSearchParams]);
+
+  const goPrev = useCallback(() => {
+    const prev = Math.max(page - 1, 1);
+    rawSetPage(prev);
+    updateSearchParams(prev, sortBy, sortOrder);
+  }, [page, rawSetPage, sortBy, sortOrder, updateSearchParams]);
+
+  const goToPage = useCallback(
+    (newPage: number) => {
+      rawSetPage(newPage);
+      updateSearchParams(newPage, sortBy, sortOrder);
+    },
+    [rawSetPage, sortBy, sortOrder, updateSearchParams],
+  );
 
   return {
     cards,
@@ -119,5 +128,7 @@ export function useCardTable() {
     onSort,
     goNext,
     goPrev,
+    goToPage,
+    limit,
   };
 }

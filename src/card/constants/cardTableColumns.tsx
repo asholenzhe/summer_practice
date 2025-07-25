@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Card } from '@/api/card/types.ts';
-import type { CardsState } from '@/card/store/CardStore.ts';
+import type { CardsState } from '@/card/store/CardsStore.ts';
 
 export type ColumnConfig = {
   key: keyof Card;

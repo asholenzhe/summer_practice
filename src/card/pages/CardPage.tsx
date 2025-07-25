@@ -1,10 +1,10 @@
 import { CardsLayout } from '@/card/components/CardsLayout.tsx';
-import { CardTable } from '@/card/components/CardsTable.tsx';
+import { CardsTable } from '@/card/components/CardsTable.tsx';
 
 export function CardPage() {
   return (
     <CardsLayout>
-      <CardTable />
+      <CardsTable />
     </CardsLayout>
   );
 }
