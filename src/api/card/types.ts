@@ -47,3 +47,7 @@ export interface GetCardsParams {
   filter_by_ready?: boolean;
   search_word?: string;
 }
+
+export interface UpdateLevelRequest {
+  increase: boolean;
+}
