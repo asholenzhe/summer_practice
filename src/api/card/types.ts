@@ -37,3 +37,13 @@ export interface ListCardsResponse {
   total: number;
   total_pages: number;
 }
+
+export interface GetCardsParams {
+  page?: number;
+  limit?: number;
+  sort_by?: 'created_at' | 'updated_at' | 'word' | 'current_level' | 'next_review_date';
+  sort_order?: 'asc' | 'desc';
+  filter_by_level?: number;
+  filter_by_ready?: boolean;
+  search_word?: string;
+}

@@ -1,7 +1,7 @@
 import { createCard } from '@/api/card/createCard.ts';
 import type { Card, CreateCardRequest } from '@/api/card/types.ts';
 import { useCallback } from 'react';
-import { CardsStore } from '@/card/store/CardStore.ts';
+import { CardsStore } from '@/card/store/CardsStore.ts';
 
 export function useCreateCard() {
   const { setIsLoading, setError, addCard } = CardsStore((store) => store);
